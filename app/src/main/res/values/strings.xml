@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">PartyManager</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="menu_card1">MENU CARD 1</string>
+    <string name="menu_card2">MENU CARD 2</string>
+    <string name="menu_card3">MENU CARD 3</string>
+    <string name="item_name">Item Name</string>
+    <string name="enter_item_name">Enter Item Name</string>
+    <string name="enter_price">Enter Price</string>
+    <string name="enter_new_item">Enter New Item</string>
+    <string name="new_item">Enter New Item</string>
+    <string name="update_item">Update Item</string>
+    <string name="clear_all">Clear All</string>
+</resources>
