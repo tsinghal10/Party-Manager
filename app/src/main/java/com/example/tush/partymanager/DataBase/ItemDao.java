@@ -29,6 +29,6 @@ public interface ItemDao {
     void delete(Item item);
 
     @Update
-    void update(Item item);
+    void update(Item... items);
 }
 

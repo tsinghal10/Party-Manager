@@ -2,29 +2,54 @@ package com.example.tush.partymanager.DataBase;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
+
+import java.security.PrivateKey;
 
 @Entity(tableName = "ITEM_TABLE")
 public class Item {
 
-    @PrimaryKey
+    @NonNull
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
     @NonNull
     @ColumnInfo(name = "ITEM_NAME")
     private String item_name;
 
+    @NonNull
     @ColumnInfo(name = "ITEM_PRICE")
     private int item_price;
 
     @ColumnInfo(name = "ITEM_QUANTITY")
     private int item_quantity;
 
-    public Item(){}
+    public Item() {
+    }
 
-    public Item(@NonNull String name, int price, int quanity) {
+    public  Item(@NonNull String name,@NonNull int price, int quanity){
         item_name = name;
         item_price = price;
         item_quantity = quanity;
+    }
+
+    @Ignore
+    public Item(int id,@NonNull String name,@NonNull int price, int quanity) {
+        this.id = id;
+        item_name = name;
+        item_price = price;
+        item_quantity = quanity;
+    }
+
+    @NonNull
+    public int getId() {
+        return id;
+    }
+
+    public void setId(@NonNull int id) {
+        this.id = id;
     }
 
     @NonNull

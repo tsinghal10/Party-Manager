@@ -45,7 +45,7 @@ public class Tab3 extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_tab3, container, false);
 
         RecyclerView rv = rootview.findViewById(R.id.tab3rv);
-        rva=new RVAdapter(itemLists);
+        rva = new RVAdapter(itemLists);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         rv.setAdapter(rva);
@@ -60,13 +60,13 @@ public class Tab3 extends Fragment {
             }
         });
 
-        final DialogBox dialogBox=new DialogBox(rv,rva,itemLists);
+        final DialogBox dialogBox = new DialogBox(rv, rva, itemLists);
 
         FloatingActionButton fab = (FloatingActionButton) rootview.findViewById(R.id.fab3);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogBox.showDialog(getContext(),false, null, -1,itemViewModel);
+                dialogBox.showDialog(getContext(), false, null, -1, itemViewModel);
             }
         });
 
@@ -78,7 +78,7 @@ public class Tab3 extends Fragment {
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-                        dialogBox.showActionDialog(getContext(),position,itemViewModel);
+                        dialogBox.showActionDialog(getContext(), position, itemViewModel);
                     }
                 })
         );

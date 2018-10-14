@@ -36,9 +36,10 @@ public class DialogBox {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {                    //update
-                    showDialog(context, true, itemLists.get(position), position,itemViewModel);
-                } else {                            //delete
                     Item item=rva.getItemPosition(position);
+                    showDialog(context, true, item, position, itemViewModel);
+                } else {                            //delete
+                    Item item = rva.getItemPosition(position);
                     itemViewModel.delete(item);
                 }
             }
@@ -97,12 +98,12 @@ public class DialogBox {
                 int price = Integer.parseInt(itemPrice.getText().toString());
 
                 if (shouldUpdate && item != null) {         //update
-                    Item item1 = itemLists.get(position);
-                    item1.setItem_name(name);
-                    item1.setItem_price(price);
-
-                    itemLists.set(position, item1);
-                    rva.notifyItemChanged(position);
+                    Item object = rva.getItemPosition(position);
+                    object.setId(item.getId());
+                    object.setItem_name(name);
+                    object.setItem_price(price);
+                    object.setItem_quantity(item.getItem_quantity());
+                    itemViewModel.update(object);
 
                 } else {                                    //insert
                     Item object = new Item(name, price, 0);

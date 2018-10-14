@@ -77,7 +77,21 @@ public class ItemRepository {
     }
 
     public void update(Item item) {
+        new updateAsyncTask(itemDao).execute(item);
+    }
 
+    private static class updateAsyncTask extends AsyncTask<Item, Void, Void> {
+        private ItemDao mAsyncTaskDao;
+
+        updateAsyncTask(ItemDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Item... items) {
+            mAsyncTaskDao.update(items[0]);
+            return null;
+        }
     }
 
 }

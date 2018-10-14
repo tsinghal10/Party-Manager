@@ -62,7 +62,6 @@ public class Tab1 extends Fragment {
             }
         });
 
-
         final DialogBox dialogBox = new DialogBox(rv, rva, itemLists);
 
         FloatingActionButton fab = (FloatingActionButton) rootview.findViewById(R.id.fab1);

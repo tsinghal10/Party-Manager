@@ -47,7 +47,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Viewholder> {
     }
 
     public Item getItemPosition(int position) {
-        return itemLists.get(position);
+        if (itemLists.get(position) != null)
+            return itemLists.get(position);
+        return null;
     }
 
     @Override
