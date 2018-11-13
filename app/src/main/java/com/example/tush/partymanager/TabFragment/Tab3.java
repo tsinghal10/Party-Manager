@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.tush.partymanager.DataBase.Item;
 import com.example.tush.partymanager.DataBase.ItemViewModel;
@@ -22,6 +23,7 @@ import com.example.tush.partymanager.R;
 import com.example.tush.partymanager.RVAdapter;
 import com.example.tush.partymanager.RecyclerItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,6 +36,8 @@ public class Tab3 extends Fragment {
     RVAdapter rva;
     ItemViewModel itemViewModel;
 
+    final static int fragmentNo = 3;
+
     public Tab3() {
 
     }
@@ -42,10 +46,26 @@ public class Tab3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootview = inflater.inflate(R.layout.fragment_tab3, container, false);
+        final View rootview = inflater.inflate(R.layout.fragment_tab3, container, false);
 
         RecyclerView rv = rootview.findViewById(R.id.tab3rv);
-        rva = new RVAdapter(itemLists);
+        rva = new RVAdapter(itemLists, new RVAdapter.MyAdapterListener() {
+            @Override
+            public void plusOnClick(View v, int position) {
+                Item item = rva.getItemPosition(position);
+                item.setItem_quantity(item.getItem_quantity() + 1);
+                itemViewModel.update(item);
+            }
+
+            @Override
+            public void minusOnClick(View v, int position) {
+                Item item = rva.getItemPosition(position);
+                if (item.getItem_quantity() > 0) {
+                    item.setItem_quantity(item.getItem_quantity() - 1);
+                }
+                itemViewModel.update(item);
+            }
+        });
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         rv.setAdapter(rva);
@@ -56,7 +76,18 @@ public class Tab3 extends Fragment {
         itemViewModel.getAllItems().observe(this, new Observer<List<Item>>() {
             @Override
             public void onChanged(@Nullable List<Item> items) {
-                rva.setItems(items);
+                List<Item> newItems = new ArrayList<>();
+                for (int i = 0; i < items.size(); i++) {
+                    if (items.get(i).getFragment_no() == fragmentNo)
+                        newItems.add(items.get(i));
+                }
+                TextView total = rootview.findViewById(R.id.total3);
+                int sum = 0;
+                for (Item item : newItems) {
+                    sum += item.getItem_price() * item.getItem_quantity();
+                }
+                total.setText(getResources().getString(R.string.total_amount_rs) + Integer.toString(sum));
+                rva.setItems(newItems);
             }
         });
 
@@ -66,7 +97,7 @@ public class Tab3 extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogBox.showDialog(getContext(), false, null, -1, itemViewModel);
+                dialogBox.showDialog(getContext(), false, null, -1, itemViewModel, fragmentNo);
             }
         });
 
@@ -78,11 +109,10 @@ public class Tab3 extends Fragment {
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-                        dialogBox.showActionDialog(getContext(), position, itemViewModel);
+                        dialogBox.showActionDialog(getContext(), position, itemViewModel, fragmentNo);
                     }
                 })
         );
-
 
         return rootview;
     }

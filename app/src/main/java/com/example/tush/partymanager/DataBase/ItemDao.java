@@ -19,7 +19,7 @@ public interface ItemDao {
     @Query("DELETE FROM ITEM_TABLE")
     void deleteAll();
 
-    @Query("SELECT * FROM ITEM_TABLE")
+    @Query("SELECT * FROM ITEM_TABLE ORDER BY ITEM_NAME ASC")
     LiveData<List<Item>> getAllItems();
 
     @Query("SELECT * FROM ITEM_TABLE LIMIT 1")
@@ -28,7 +28,8 @@ public interface ItemDao {
     @Delete
     void delete(Item item);
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     void update(Item... items);
+
 }
 

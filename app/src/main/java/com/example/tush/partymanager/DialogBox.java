@@ -1,6 +1,5 @@
 package com.example.tush.partymanager;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -28,7 +27,7 @@ public class DialogBox {
         this.itemLists = itemLists;
     }
 
-    public void showActionDialog(final Context context, final int position, final ItemViewModel itemViewModel) {
+    public void showActionDialog(final Context context, final int position, final ItemViewModel itemViewModel, final int fragment_no) {
         CharSequence option[] = new CharSequence[]{"Edit", "Delete"};
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
         alertBuilder.setTitle("Choose Option");
@@ -36,8 +35,8 @@ public class DialogBox {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {                    //update
-                    Item item=rva.getItemPosition(position);
-                    showDialog(context, true, item, position, itemViewModel);
+                    Item item = rva.getItemPosition(position);
+                    showDialog(context, true, item, position, itemViewModel, fragment_no);
                 } else {                            //delete
                     Item item = rva.getItemPosition(position);
                     itemViewModel.delete(item);
@@ -47,7 +46,8 @@ public class DialogBox {
         alertBuilder.show();
     }
 
-    public void showDialog(final Context context, final boolean shouldUpdate, final Item item, final int position, final ItemViewModel itemViewModel) {
+    public void showDialog(final Context context, final boolean shouldUpdate, final Item item, final int position,
+                           final ItemViewModel itemViewModel, final int fragment_no) {
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(context);
         View view = layoutInflaterAndroid.inflate(R.layout.item_dialog, null);
 
@@ -99,6 +99,7 @@ public class DialogBox {
 
                 if (shouldUpdate && item != null) {         //update
                     Item object = rva.getItemPosition(position);
+                    object.setFragment_no(item.getFragment_no());
                     object.setId(item.getId());
                     object.setItem_name(name);
                     object.setItem_price(price);
@@ -106,7 +107,7 @@ public class DialogBox {
                     itemViewModel.update(object);
 
                 } else {                                    //insert
-                    Item object = new Item(name, price, 0);
+                    Item object = new Item(name, price, 0, fragment_no);
                     itemViewModel.insert(object);
                 }
             }

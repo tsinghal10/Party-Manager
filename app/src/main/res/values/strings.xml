@@ -12,4 +12,5 @@
     <string name="new_item">Enter New Item</string>
     <string name="update_item">Update Item</string>
     <string name="clear_all">Clear All</string>
+    <string name="total_amount_rs">Total Amount:    Rs.</string>
 </resources>

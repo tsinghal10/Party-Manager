@@ -3,12 +3,14 @@ package com.example.tush.partymanager.DataBase;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import java.security.PrivateKey;
 
-@Entity(tableName = "ITEM_TABLE")
+@Entity(tableName = "ITEM_TABLE",
+        indices = {@Index(value = "FRAGMENT_NO")})
 public class Item {
 
     @NonNull
@@ -26,21 +28,26 @@ public class Item {
     @ColumnInfo(name = "ITEM_QUANTITY")
     private int item_quantity;
 
+    @ColumnInfo(name = "FRAGMENT_NO")
+    private int fragment_no;
+
     public Item() {
     }
 
-    public  Item(@NonNull String name,@NonNull int price, int quanity){
+    public Item(@NonNull String name, @NonNull int price, int quantity, int fragment_no) {
         item_name = name;
         item_price = price;
-        item_quantity = quanity;
+        item_quantity = quantity;
+        this.fragment_no = fragment_no;
     }
 
     @Ignore
-    public Item(int id,@NonNull String name,@NonNull int price, int quanity) {
+    public Item(int id, @NonNull String name, @NonNull int price, int quantity, int fragment_no) {
         this.id = id;
         item_name = name;
         item_price = price;
-        item_quantity = quanity;
+        item_quantity = quantity;
+        this.fragment_no = fragment_no;
     }
 
     @NonNull
@@ -75,5 +82,13 @@ public class Item {
 
     public void setItem_quantity(int item_quantity) {
         this.item_quantity = item_quantity;
+    }
+
+    public void setFragment_no(int fragment_no) {
+        this.fragment_no = fragment_no;
+    }
+
+    public int getFragment_no() {
+        return fragment_no;
     }
 }

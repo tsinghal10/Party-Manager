@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.tush.partymanager.DataBase.Item;
@@ -17,8 +18,17 @@ import java.util.List;
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Viewholder> {
     private List<Item> itemLists;
 
-    public RVAdapter(List<Item> itemLists) {
+    public interface MyAdapterListener {
+        void plusOnClick(View v, int position);
+
+        void minusOnClick(View v, int position);
+    }
+
+    public MyAdapterListener myAdapterListener;
+
+    public RVAdapter(List<Item> itemLists, MyAdapterListener listener) {
         this.itemLists = itemLists;
+        myAdapterListener = listener;
     }
 
     @NonNull
@@ -29,7 +39,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Viewholder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Viewholder Viewholder, int i) {
+    public void onBindViewHolder(@NonNull final Viewholder Viewholder, final int i) {
         if (itemLists != null) {
             Viewholder.item.setText(itemLists.get(i).getItem_name());
             Viewholder.price.setText("Rs. " + Integer.toString(itemLists.get(i).getItem_price()));
@@ -39,10 +49,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Viewholder> {
             Viewholder.price.setText("Rs. 0");
             Viewholder.quantity.setText("0");
         }
+        Viewholder.myAdapterListener = this.myAdapterListener;
     }
 
     public void setItems(List<Item> items) {
-        itemLists = items;
+        if (items != null)
+            itemLists = items;
         notifyDataSetChanged();
     }
 
@@ -62,14 +74,32 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Viewholder> {
 
     public static class Viewholder extends RecyclerView.ViewHolder {
         TextView item, price, quantity;
+        Button plus, minus;
+        MyAdapterListener myAdapterListener;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
             item = itemView.findViewById(R.id.item);
             price = itemView.findViewById(R.id.price);
             quantity = itemView.findViewById(R.id.quantity);
-        }
+            plus = itemView.findViewById(R.id.plus);
+            minus = itemView.findViewById(R.id.minus);
 
+            plus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myAdapterListener.plusOnClick(v, getAdapterPosition());
+                }
+            });
+
+            minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myAdapterListener.minusOnClick(v, getAdapterPosition());
+                }
+            });
+
+        }
 
     }
 }
